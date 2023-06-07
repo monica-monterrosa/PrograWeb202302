@@ -36,16 +36,13 @@ namespace BackEnd.Controllers
             return new JsonResult(shippers);
         }
 
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
         // GET api/<ShipperController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public JsonResult Get(int id)
         {
-            return "value";
+            Shipper shipper = shipperDAL.Get(id);
+
+            return new JsonResult(shipper);
         }
 
         #endregion

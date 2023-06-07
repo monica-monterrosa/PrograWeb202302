@@ -31,9 +31,16 @@ namespace DAL.Implementations
 
         public Shipper Get(int id)
         {
-            throw new NotImplementedException();
-        }
+            Shipper shipper = null;
+            using (unidad = new UnidadDeTrabajo<Shipper>(new NorthWindContext()))
+            {
+                shipper = unidad.genericDAL.Get(id);
 
+
+            }
+
+            return shipper;
+        }
 
         public IEnumerable<Shipper> GetAll()
         {
