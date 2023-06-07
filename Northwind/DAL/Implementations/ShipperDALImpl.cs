@@ -34,10 +34,17 @@ namespace DAL.Implementations
             throw new NotImplementedException();
         }
 
+
         public IEnumerable<Shipper> GetAll()
         {
-            throw new NotImplementedException();
+            IEnumerable<Shipper> shippers = null;
+            using (unidad = new UnidadDeTrabajo<Shipper>(new NorthWindContext()))
+            {
+                shippers = unidad.genericDAL.GetAll();
+            }
+            return shippers;
         }
+
 
         public bool Remove(Shipper entity)
         {
