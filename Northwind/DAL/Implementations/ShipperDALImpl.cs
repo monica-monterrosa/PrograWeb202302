@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Implementations
 {
-    internal class ShipperDALImpl : IShipperDAL
+    public class ShipperDALImpl : IShipperDAL
     {
         private NorthWindContext _northWindContext;
         private UnidadDeTrabajo<Shipper> unidad;

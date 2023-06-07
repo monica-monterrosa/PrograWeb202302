@@ -1,4 +1,7 @@
-﻿using DAL.Interfaces;
+﻿using BackEnd.Models;
+using DAL.Implementations;
+using DAL.Interfaces;
+using Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,20 +15,27 @@ namespace BackEnd.Controllers
 
         private IShipperDAL shipperDAL;
 
-        #region Construtores
 
+        #region Construtores
         public ShipperController()
         {
-            
+            shipperDAL = new ShipperDALImpl();
+
         }
 
         #endregion
 
 
-
-
+        #region Consultas
         // GET: api/<ShipperController>
         [HttpGet]
+        public JsonResult Get()
+        {
+            IEnumerable<Shipper> shippers = shipperDAL.GetAll();
+
+            return new JsonResult(shippers);
+        }
+
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
@@ -38,22 +48,36 @@ namespace BackEnd.Controllers
             return "value";
         }
 
+        #endregion
+
+
+        #region Agregar
         // POST api/<ShipperController>
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
+        #endregion
+
+
+        #region Modificar
         // PUT api/<ShipperController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
+        #endregion
+
+
+        #region Eliminar
         // DELETE api/<ShipperController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
         }
+
+        #endregion
     }
 }
