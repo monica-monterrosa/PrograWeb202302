@@ -1,4 +1,4 @@
-﻿
+﻿using BackEnd.Models;
 using DAL.Implementations;
 using DAL.Interfaces;
 using Entities.Entities;
@@ -32,8 +32,22 @@ namespace BackEnd.Controllers
         public JsonResult Get()
         {
             IEnumerable<Shipper> shippers = shipperDAL.GetAll();
+            List<ShipperModel> models = new List<ShipperModel>();
 
-            return new JsonResult(shippers);
+            foreach (var shipper in shippers)
+            {
+                models.Add(
+                    new ShipperModel
+                    {
+                        ShipperId=shipper.ShipperId,
+                        CompanyName=shipper.CompanyName,
+                        Phone=shipper.Phone
+
+                    }
+                    );
+            }
+
+            return new JsonResult(models);
         }
 
         // GET api/<ShipperController>/5
@@ -42,7 +56,12 @@ namespace BackEnd.Controllers
         {
             Shipper shipper = shipperDAL.Get(id);
 
-            return new JsonResult(shipper);
+            return new JsonResult(new ShipperModel
+            {
+                ShipperId = shipper.ShipperId,
+                CompanyName = shipper.CompanyName,
+                Phone = shipper.Phone
+            });
         }
 
         #endregion

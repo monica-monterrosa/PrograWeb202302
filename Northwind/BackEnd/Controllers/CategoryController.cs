@@ -2,6 +2,7 @@
 using DAL.Interfaces;
 using Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
+using BackEnd.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,6 +14,7 @@ namespace BackEnd.Controllers
     {
 
         private ICategoryDAL categoryDAL;
+        private Convertir()
 
         #region Constructores
 
@@ -32,9 +34,22 @@ namespace BackEnd.Controllers
         public JsonResult Get()
         {
             IEnumerable<Category> categories = categoryDAL.GetAll();
+            List<CategoryModel> models= new List<CategoryModel>();
+
+            foreach (var category in categories)
+            {
+                models.Add(
+                    new CategoryModel
+                    {
+                        CategoryId=category.CategoryId,
+                        CategoryName=category.CategoryName,
+                        Description=category.Description
+                    }
+                    );
+            }
 
 
-            return new JsonResult(categories);
+            return new JsonResult(models);
         }
 
         // GET api/<CategoryController>/5
@@ -44,7 +59,12 @@ namespace BackEnd.Controllers
             Category category = categoryDAL.Get(id);
 
 
-            return new JsonResult(category);
+            return new JsonResult(new CategoryModel
+            {
+                CategoryId = category.CategoryId,
+                CategoryName = category.CategoryName,
+                Description = category.Description
+            });
         }
         #endregion
 
