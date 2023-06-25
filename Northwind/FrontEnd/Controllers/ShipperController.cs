@@ -8,21 +8,23 @@ namespace FrontEnd.Controllers
     public class ShipperController : Controller
     {
 
-        ShipperHelper ShipperHelper;
+        ShipperHelper shipperHelper;
 
 
         // GET: ShipperController
         public ActionResult Index()
         {
-            ShipperHelper = new ShipperHelper();
-            List<ShipperViewModel> list = ShipperHelper.GetAll();
+            shipperHelper = new ShipperHelper();
+            List<ShipperViewModel> list = shipperHelper.GetAll();
             return View(list);
         }
 
         // GET: ShipperController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            shipperHelper = new ShipperHelper();
+            ShipperViewModel shipper = shipperHelper.GetByID(id);
+            return View(shipper);
         }
 
         // GET: ShipperController/Create
