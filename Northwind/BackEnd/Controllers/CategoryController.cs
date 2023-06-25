@@ -14,7 +14,25 @@ namespace BackEnd.Controllers
     {
 
         private ICategoryDAL categoryDAL;
-        private Convertir()
+        private CategoryModel Convertir(Category category)
+        {
+            return new CategoryModel
+            {
+                CategoryId = category.CategoryId,
+                CategoryName = category.CategoryName,
+                Description = category.Description
+            };
+        }
+
+        private Category Convertir(CategoryModel category)
+        {
+            return new Category
+            {
+                CategoryId = category.CategoryId,
+                CategoryName = category.CategoryName,
+                Description = category.Description
+            };
+        }
 
         #region Constructores
 
@@ -38,14 +56,7 @@ namespace BackEnd.Controllers
 
             foreach (var category in categories)
             {
-                models.Add(
-                    new CategoryModel
-                    {
-                        CategoryId=category.CategoryId,
-                        CategoryName=category.CategoryName,
-                        Description=category.Description
-                    }
-                    );
+                models.Add(Convertir(category));
             }
 
 
@@ -59,12 +70,7 @@ namespace BackEnd.Controllers
             Category category = categoryDAL.Get(id);
 
 
-            return new JsonResult(new CategoryModel
-            {
-                CategoryId = category.CategoryId,
-                CategoryName = category.CategoryName,
-                Description = category.Description
-            });
+            return new JsonResult(Convertir(category));
         }
         #endregion
 

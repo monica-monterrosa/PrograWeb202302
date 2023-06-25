@@ -14,9 +14,28 @@ namespace BackEnd.Controllers
     {
 
         private IShipperDAL shipperDAL;
+        private ShipperModel Convertir(Shipper shipper)
+        {
+            return new ShipperModel
+            {
+                ShipperId= shipper.ShipperId,
+                CompanyName= shipper.CompanyName,
+                Phone= shipper.Phone
+            };
+        }
 
+        private Shipper Convertir(ShipperModel shipper)
+        {
+            return new Shipper
+            {
+                ShipperId = shipper.ShipperId,
+                CompanyName = shipper.CompanyName,
+                Phone = shipper.Phone
+            };
+        }
 
-        #region Construtores
+        #region Constructores
+
         public ShipperController()
         {
             shipperDAL = new ShipperDALImpl();
@@ -27,6 +46,7 @@ namespace BackEnd.Controllers
 
 
         #region Consultas
+
         // GET: api/<ShipperController>
         [HttpGet]
         public JsonResult Get()
@@ -36,16 +56,9 @@ namespace BackEnd.Controllers
 
             foreach (var shipper in shippers)
             {
-                models.Add(
-                    new ShipperModel
-                    {
-                        ShipperId=shipper.ShipperId,
-                        CompanyName=shipper.CompanyName,
-                        Phone=shipper.Phone
-
-                    }
-                    );
+                models.Add(Convertir(shipper));
             }
+
 
             return new JsonResult(models);
         }
@@ -56,14 +69,9 @@ namespace BackEnd.Controllers
         {
             Shipper shipper = shipperDAL.Get(id);
 
-            return new JsonResult(new ShipperModel
-            {
-                ShipperId = shipper.ShipperId,
-                CompanyName = shipper.CompanyName,
-                Phone = shipper.Phone
-            });
-        }
 
+            return new JsonResult(Convertir(shipper));
+        }
         #endregion
 
 
