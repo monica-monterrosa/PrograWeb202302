@@ -1,8 +1,8 @@
-﻿using DAL.Implementations;
+﻿using BackEnd.Models;
+using DAL.Implementations;
 using DAL.Interfaces;
 using Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
-using BackEnd.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,6 +14,7 @@ namespace BackEnd.Controllers
     {
 
         private ICategoryDAL categoryDAL;
+
         private CategoryModel Convertir(Category category)
         {
             return new CategoryModel
@@ -24,6 +25,8 @@ namespace BackEnd.Controllers
             };
         }
 
+
+
         private Category Convertir(CategoryModel category)
         {
             return new Category
@@ -33,6 +36,7 @@ namespace BackEnd.Controllers
                 Description = category.Description
             };
         }
+
 
         #region Constructores
 
@@ -52,13 +56,14 @@ namespace BackEnd.Controllers
         public JsonResult Get()
         {
             IEnumerable<Category> categories = categoryDAL.GetAll();
-            List<CategoryModel> models= new List<CategoryModel>();
+            List<CategoryModel> models = new List<CategoryModel>();
 
             foreach (var category in categories)
             {
-                models.Add(Convertir(category));
-            }
 
+                models.Add(Convertir(category));
+
+            }
 
             return new JsonResult(models);
         }
@@ -79,8 +84,11 @@ namespace BackEnd.Controllers
 
         // POST api/<CategoryController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public JsonResult Post([FromBody] CategoryModel category)
         {
+
+            categoryDAL.Add(Convertir(category));
+            return new JsonResult(category);
         }
 
         #endregion
@@ -89,9 +97,11 @@ namespace BackEnd.Controllers
 
 
         // PUT api/<CategoryController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public JsonResult Put([FromBody] CategoryModel category)
         {
+            categoryDAL.Update(Convertir(category));
+            return new JsonResult(category);
         }
         #endregion
 
@@ -101,6 +111,13 @@ namespace BackEnd.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            Category category = new Category
+            {
+                CategoryId = id
+            };
+
+            categoryDAL.Remove(category);
+
         }
 
         #endregion
