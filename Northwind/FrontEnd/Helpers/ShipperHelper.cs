@@ -1,5 +1,6 @@
 ﻿using FrontEnd.Models;
 using Newtonsoft.Json;
+
 namespace FrontEnd.Helpers
 {
     public class ShipperHelper
@@ -38,24 +39,79 @@ namespace FrontEnd.Helpers
         #region GetByID
 
         /// <summary>
-        /// Obtener Shipper por ID
+        /// Obtener Categoria por ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public ShipperViewModel GetByID(int id)
         {
-            ShipperViewModel Shipper = new ShipperViewModel();
+            ShipperViewModel shipper = new ShipperViewModel();
 
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Shipper/" + id);
+            HttpResponseMessage responseMessage = repository.GetResponse("api/shipper/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            Shipper = JsonConvert.DeserializeObject<ShipperViewModel>(content);
+            shipper = JsonConvert.DeserializeObject<ShipperViewModel>(content);
 
-            return Shipper;
+            return shipper;
 
         }
 
 
 
         #endregion
+
+
+        #region Update
+        public ShipperViewModel Edit(ShipperViewModel shipper)
+        {
+
+            HttpResponseMessage responseMessage = repository.PutResponse("api/shipper/", shipper);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            ShipperViewModel shipperAPI = JsonConvert.DeserializeObject<ShipperViewModel>(content);
+            return shipperAPI;
+
+        }
+
+
+        #endregion
+
+
+        #region Create
+        public ShipperViewModel Add(ShipperViewModel shipper)
+        {
+
+            HttpResponseMessage responseMessage = repository.PostResponse("api/shipper/", shipper);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            ShipperViewModel shipperAPI = JsonConvert.DeserializeObject<ShipperViewModel>(content);
+            return shipperAPI;
+
+        }
+
+
+        #endregion
+
+
+        #region GetByID
+
+        /// <summary>
+        /// Obtener Categoria por ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ShipperViewModel Delete(int id)
+        {
+            ShipperViewModel shipper = new ShipperViewModel();
+
+            HttpResponseMessage responseMessage = repository.DeleteResponse("api/shipper/" + id);
+            // string content = responseMessage.Content.ReadAsStringAsync().Result;
+            // shipper = JsonConvert.DeserializeObject<ShipperViewModel>(content);
+
+            return shipper;
+
+        }
+
+
+
+        #endregion
+
     }
 }

@@ -60,6 +60,58 @@ namespace FrontEnd.Helpers
         #endregion
 
 
+        #region Update
+        public CategoryViewModel Edit(CategoryViewModel category)
+        {
+
+            HttpResponseMessage responseMessage = repository.PutResponse("api/category/", category);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            CategoryViewModel categoryAPI = JsonConvert.DeserializeObject<CategoryViewModel>(content);
+            return categoryAPI;
+
+        }
+
+
+        #endregion
+
+
+        #region Create
+        public CategoryViewModel Add(CategoryViewModel category)
+        {
+
+            HttpResponseMessage responseMessage = repository.PostResponse("api/category/", category);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            CategoryViewModel categoryAPI = JsonConvert.DeserializeObject<CategoryViewModel>(content);
+            return categoryAPI;
+
+        }
+
+
+        #endregion
+
+
+        #region GetByID
+
+        /// <summary>
+        /// Obtener Categoria por ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public CategoryViewModel Delete(int id)
+        {
+            CategoryViewModel category = new CategoryViewModel();
+
+            HttpResponseMessage responseMessage = repository.DeleteResponse("api/category/" + id);
+            // string content = responseMessage.Content.ReadAsStringAsync().Result;
+            // category = JsonConvert.DeserializeObject<CategoryViewModel>(content);
+
+            return category;
+
+        }
+
+
+
+        #endregion
 
     }
 }

@@ -46,15 +46,15 @@ namespace DAL.Implementations
 
         public Shipper Get(int id)
         {
-            Shipper Shipper = null;
+            Shipper shipper = null;
             using (unidad = new UnidadDeTrabajo<Shipper>(new NorthWindContext()))
             {
-                Shipper = unidad.genericDAL.Get(id);
+                shipper = unidad.genericDAL.Get(id);
 
 
             }
 
-            return Shipper;
+            return shipper;
         }
 
         public IEnumerable<Shipper> GetAll()
@@ -90,7 +90,7 @@ namespace DAL.Implementations
                 return false;
             }
         }
-
+ategories
         public void RemoveRange(IEnumerable<Shipper> entities)
         {
             throw new NotImplementedException();

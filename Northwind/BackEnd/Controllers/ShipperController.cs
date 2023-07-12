@@ -13,27 +13,27 @@ namespace BackEnd.Controllers
     public class ShipperController : ControllerBase
     {
 
-        private IShipperDAL ShipperDAL;
+        private IShipperDAL shipperDAL;
 
-        private ShipperModel Convertir(Shipper Shipper)
+        private ShipperModel Convertir(Shipper shipper)
         {
             return new ShipperModel
             {
-                ShipperId = Shipper.ShipperId,
-                CompanyName = Shipper.CompanyName,
-                Phone = Shipper.Phone
+                ShipperId = shipper.ShipperId,
+                ShipperName = shipper.ShipperName,
+                Description = shipper.Description
             };
         }
 
 
 
-        private Shipper Convertir(ShipperModel Shipper)
+        private Shipper Convertir(ShipperModel shipper)
         {
             return new Shipper
             {
-                ShipperId = Shipper.ShipperId,
-                CompanyName = Shipper.CompanyName,
-                Phone = Shipper.Phone
+                ShipperId = shipper.ShipperId,
+                ShipperName = shipper.ShipperName,
+                Description = shipper.Description
             };
         }
 
@@ -42,7 +42,7 @@ namespace BackEnd.Controllers
 
         public ShipperController()
         {
-            ShipperDAL = new ShipperDALImpl();
+            shipperDAL = new ShipperDALImpl();
 
         }
 
@@ -55,13 +55,13 @@ namespace BackEnd.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            IEnumerable<Shipper> shippers = ShipperDAL.GetAll();
+            IEnumerable<Shipper> shippers = shipperDAL.GetAll();
             List<ShipperModel> models = new List<ShipperModel>();
 
-            foreach (var Shipper in shippers)
+            foreach (var shipper in shippers)
             {
 
-                models.Add(Convertir(Shipper));
+                models.Add(Convertir(shipper));
 
             }
 
@@ -72,10 +72,10 @@ namespace BackEnd.Controllers
         [HttpGet("{id}")]
         public JsonResult Get(int id)
         {
-            Shipper Shipper = ShipperDAL.Get(id);
+            Shipper shipper = shipperDAL.Get(id);
 
 
-            return new JsonResult(Convertir(Shipper));
+            return new JsonResult(Convertir(shipper));
         }
         #endregion
 
@@ -84,11 +84,11 @@ namespace BackEnd.Controllers
 
         // POST api/<ShipperController>
         [HttpPost]
-        public JsonResult Post([FromBody] ShipperModel Shipper)
+        public JsonResult Post([FromBody] ShipperModel shipper)
         {
 
-            ShipperDAL.Add(Convertir(Shipper));
-            return new JsonResult(Shipper);
+            shipperDAL.Add(Convertir(shipper));
+            return new JsonResult(shipper);
         }
 
         #endregion
@@ -98,10 +98,10 @@ namespace BackEnd.Controllers
 
         // PUT api/<ShipperController>/5
         [HttpPut]
-        public JsonResult Put([FromBody] ShipperModel Shipper)
+        public JsonResult Put([FromBody] ShipperModel shipper)
         {
-            ShipperDAL.Update(Convertir(Shipper));
-            return new JsonResult(Shipper);
+            shipperDAL.Update(Convertir(shipper));
+            return new JsonResult(shipper);
         }
         #endregion
 
@@ -111,12 +111,12 @@ namespace BackEnd.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            Shipper Shipper = new Shipper
+            Shipper shipper = new Shipper
             {
                 ShipperId = id
             };
 
-            ShipperDAL.Remove(Shipper);
+            shipperDAL.Remove(shipper);
 
         }
 
