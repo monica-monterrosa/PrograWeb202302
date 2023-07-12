@@ -1,5 +1,6 @@
 ﻿using DAL.Interfaces;
 using Entities.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,12 +45,12 @@ namespace DAL.Implementations
             throw new NotImplementedException();
         }
 
-        public Category Get(int id)
+        public async Task<Category> Get(int id)
         {
             Category category = null;
             using (unidad = new UnidadDeTrabajo<Category>(new NorthWindContext()))
             {
-                category = unidad.genericDAL.Get(id);
+                category = await unidad.genericDAL.Get(id);
 
 
             }
@@ -57,14 +58,29 @@ namespace DAL.Implementations
             return category;
         }
 
-        public IEnumerable<Category> GetAll()
+        public async Task<IEnumerable<Category>> GetAll()
         {
-            IEnumerable<Category> categories = null;
-            using (unidad = new UnidadDeTrabajo<Category>(new NorthWindContext()))
+            List<Category> categories = new List<Category>();
+            List<sp_GetAllCategories_Result> resultado;
+
+            string sql = "[dbo].[sp_GetAllCategories]";
+            NorthWindContext northWindContext = new NorthWindContext();
+
+            resultado = await northWindContext.sp_GetAllCategories_Results
+                .FromSqlRaw(sql)
+                .ToListAsync();
+
+            foreach(var item in resultado)
             {
-                categories = unidad.genericDAL.GetAll();
-
-
+                categories.Add(
+                    new Category
+                    {
+                        CategoryId= item.CategoryId,
+                        CategoryName= item.CategoryName,
+                        Description= item.Description,
+                        Picture= item.Picture,
+                    }
+                    );
             }
 
             return categories;
