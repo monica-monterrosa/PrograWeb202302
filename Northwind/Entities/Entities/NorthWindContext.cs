@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Entities.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -9,6 +10,8 @@ namespace Entities.Entities
     {
         public NorthWindContext()
         {
+            var optionBuilder = new DbContextOptionsBuilder<NorthWindContext>();
+            optionBuilder.UseSqlServer(Util.ConnectionString);
         }
 
         public NorthWindContext(DbContextOptions<NorthWindContext> options)
@@ -43,23 +46,19 @@ namespace Entities.Entities
         public virtual DbSet<SummaryOfSalesByYear> SummaryOfSalesByYears { get; set; } = null!;
         public virtual DbSet<Supplier> Suppliers { get; set; } = null!;
         public virtual DbSet<Territory> Territories { get; set; } = null!;
-
-        //Se agregó al agregar el procedimiento almacenado
         public virtual DbSet<sp_GetAllCategories_Result> sp_GetAllCategories_Results { get; set; } = null!;
+
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-90OAL62\\SQLEXPRESS;Database=NorthWind;Integrated Security=True;Trusted_Connection=True;");
-            }
+            optionsBuilder.UseSqlServer(Util.ConnectionString);
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AS");
-
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<AlphabeticalListOfProduct>(entity =>
             {
                 entity.HasNoKey();
